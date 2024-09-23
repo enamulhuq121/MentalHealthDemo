@@ -24,6 +24,10 @@
 
     <uses-feature android:name="android.hardware.camera" android:required="true" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GPS" />
@@ -98,6 +102,7 @@
         <activity android:name="forms_activity.Patient_list" />
         <activity android:name="forms_activity.Patient" />
         <activity android:name="forms_activity.SectionA" />
+        <activity android:name="forms_activity.ScreeningChild" />
         <activity android:name="forms_activity.SectionB" />
         <activity android:name="forms_activity.SectionC" />
         <activity android:name="forms_activity.SPECIFICVAR" />

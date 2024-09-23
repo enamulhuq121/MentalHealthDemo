@@ -69,7 +69,7 @@
                         android:layout_height="wrap_content" android:orientation="horizontal" android:weightSum="2">
 
                         <Button
-                            android:id="@+id/cmdSecA"
+                            android:id="@+id/cmdFSChild"
                             style="@style/menuButtonStyle"
                             android:layout_width="fill_parent"
                             android:layout_height="90dp"
@@ -79,7 +79,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/button_style_gray"
                             android:gravity="center|center_vertical"
-                            android:text="SECTION A: PATIENT HEALTH QUESTIONNAIRES (PHQ)"
+                            android:text="Form Screening Child"
                             android:textColor="#FFFFFF"
                             android:textSize="20sp" />
                     </LinearLayout>

@@ -45,7 +45,7 @@ public class Menu_Patient extends Activity {
     static String PatCatDeliv = "";
     static String RecvService = "";
 
-    Button cmdSecA,cmdSecB,cmdSecC,cmdSecD,cmdSecE,cmdSecF,cmdSecG,cmdSecH,cmdWomen;
+    Button cmdSChild, cmdSecB,cmdSecC,cmdSecD,cmdSecE,cmdSecF,cmdSecG,cmdSecH,cmdWomen;
 
     LinearLayout secMenuConsent;
     Connection C;
@@ -100,19 +100,17 @@ public class Menu_Patient extends Activity {
         txtWName=(TextView) findViewById(R.id.txtWName);
         txtWName.setText(WoName);
 
-        cmdSecA=findViewById(R.id.cmdSecA);
-        cmdSecA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle IDbundle = new Bundle();
-                IDbundle.putString("PatientID", PATIENTID);
-                IDbundle.putString("FacilityID", FACILITYID);
-                IDbundle.putString("WoName", WoName);
-                Intent f1 = new Intent(getApplicationContext(), SectionA.class);
-                f1.putExtras(IDbundle);
-                startActivityForResult(f1,1);
-            }
+        cmdSChild=findViewById(R.id.cmdFSChild);
+        cmdSChild.setOnClickListener(view -> {
+            Bundle IDbundle = new Bundle();
+            IDbundle.putString("PatientID", PATIENTID);
+            IDbundle.putString("FacilityID", FACILITYID);
+            IDbundle.putString("WoName", WoName);
+            Intent f1 = new Intent(getApplicationContext(), ScreeningChild.class);
+            f1.putExtras(IDbundle);
+            startActivityForResult(f1,1);
         });
+
 
         cmdSecB=findViewById(R.id.cmdSecB);
         cmdSecB.setOnClickListener(new View.OnClickListener() {
@@ -305,9 +303,7 @@ public class Menu_Patient extends Activity {
             cmdWomen.setBackgroundResource(R.drawable.button_style);
         }
 
-        if(C.Existence("Select * from SectionA  where PatientID='"+ PATIENTID +"' and FacilityID='"+ FACILITYID +"'")){
-            cmdSecA.setBackgroundResource(R.drawable.button_style_green);
-        }
+
         if(C.Existence("Select * from SectionB  where PatientID='"+ PATIENTID +"' and FacilityID='"+ FACILITYID +"'")){
             cmdSecB.setBackgroundResource(R.drawable.button_style_green);
         }
