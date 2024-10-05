@@ -39,7 +39,7 @@
  import android.widget.AutoCompleteTextView;
  import androidx.appcompat.app.AppCompatActivity;
  import androidx.core.content.ContextCompat;
- import forms_datamodel.ScreeningChild_DataModel;
+ import forms_datamodel.ScreeningMother_DataModel;
  import Utility.*;
  import Common.*;
  import android.widget.Toast;
@@ -49,7 +49,7 @@
 
  import org.icddrb.mental_health_survey.R;
 
- public class ScreeningChild extends AppCompatActivity {
+ public class ScreeningMother extends AppCompatActivity {
     //Disabled Back/Home key
     //--------------------------------------------------------------------------------------------------
     @Override 
@@ -87,8 +87,8 @@
     TextView lblMEMID;
     TextView VlblMEMID;
     EditText txtMEMID;
-    LinearLayout seclbl1;
-    View linelbl1;
+    LinearLayout seclbl2;
+    View linelbl2;
     LinearLayout secQ01;
     View lineQ01;
     TextView lblQ01;
@@ -96,16 +96,13 @@
     RadioGroup rdogrpQ01;
     RadioButton rdoQ011;
     RadioButton rdoQ012;
-    LinearLayout secQ02Date;
-    View lineQ02Date;
-    TextView lblQ02Date;
-    TextView VlblQ02Date;
-    EditText txtQ02Date;
-    LinearLayout secQ02Y;
-    View lineQ02Y;
-    TextView lblQ02Y;
-    TextView VlblQ02Y;
-    EditText txtQ02Y;
+    LinearLayout secQ02;
+    View lineQ02;
+    TextView lblQ02;
+    TextView VlblQ02;
+    RadioGroup rdogrpQ02;
+    RadioButton rdoQ021;
+    RadioButton rdoQ022;
     LinearLayout secQ03;
     View lineQ03;
     TextView lblQ03;
@@ -127,20 +124,6 @@
     RadioGroup rdogrpQ05;
     RadioButton rdoQ051;
     RadioButton rdoQ052;
-    LinearLayout secQ06;
-    View lineQ06;
-    TextView lblQ06;
-    TextView VlblQ06;
-    RadioGroup rdogrpQ06;
-    RadioButton rdoQ061;
-    RadioButton rdoQ062;
-    LinearLayout secQ07;
-    View lineQ07;
-    TextView lblQ07;
-    TextView VlblQ07;
-    RadioGroup rdogrpQ07;
-    RadioButton rdoQ071;
-    RadioButton rdoQ072;
 
     static int MODULEID   = 0;
     static int LANGUAGEID = 0;
@@ -160,7 +143,7 @@
          super.onCreate(savedInstanceState);
    try
      {
-         setContentView(R.layout.screeningchild);
+         setContentView(R.layout.screeningmother);
          getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
          C = new Connection(this);
@@ -174,17 +157,16 @@
          UUID = IDbundle.getString("uuid");
          MEMID = IDbundle.getString("MEMID");
 
-         TableName = "ScreeningChild";
-         MODULEID = 9;
+         TableName = "ScreeningMother";
+         MODULEID = 11;
          LANGUAGEID = Integer.parseInt(MySharedPreferences.getValue(this, "languageid"));
          lblHeading = (TextView)findViewById(R.id.lblHeading);
 
          ImageButton cmdBack = (ImageButton) findViewById(R.id.cmdBack);
          cmdBack.setOnClickListener(new View.OnClickListener() {
              public void onClick(View v) {
-                 AlertDialog.Builder adb = new AlertDialog.Builder(ScreeningChild.this);
+                 AlertDialog.Builder adb = new AlertDialog.Builder(ScreeningMother.this);
                  adb.setTitle("Close");
-
                  adb.setMessage("Do you want to close this form[Yes/No]?");
                  adb.setNegativeButton("No", null);
                  adb.setPositiveButton("Yes", new AlertDialog.OnClickListener() {
@@ -195,57 +177,33 @@
              }});
 
         Initialization();
-        Connection.LocalizeLanguage(ScreeningChild.this, MODULEID, LANGUAGEID);
+        Connection.LocalizeLanguage(ScreeningMother.this, MODULEID, LANGUAGEID);
 
 
-         txtQ02Date.setOnTouchListener(new View.OnTouchListener() {
-             @Override
-             public boolean onTouch(View v, MotionEvent event) {
-                 if(event.getAction() == MotionEvent.ACTION_UP) {
-                      VariableID = "btnQ02Date"; showDialog(DATE_DIALOG);
-                      return true;
-                 }
-                 return false;
-             }
-         });
 
 
 
          //Hide all skip variables
-         secQ02Date.setVisibility(View.GONE);
-         lineQ02Date.setVisibility(View.GONE);
-         secQ02Y.setVisibility(View.GONE);
-         lineQ02Y.setVisibility(View.GONE);
+         secQ02.setVisibility(View.GONE);
+         lineQ02.setVisibility(View.GONE);
          secQ03.setVisibility(View.GONE);
          lineQ03.setVisibility(View.GONE);
          secQ04.setVisibility(View.GONE);
          lineQ04.setVisibility(View.GONE);
          secQ05.setVisibility(View.GONE);
          lineQ05.setVisibility(View.GONE);
-         secQ06.setVisibility(View.GONE);
-         lineQ06.setVisibility(View.GONE);
-         secQ07.setVisibility(View.GONE);
-         lineQ07.setVisibility(View.GONE);
+         secQ03.setVisibility(View.GONE);
+         lineQ03.setVisibility(View.GONE);
          secQ04.setVisibility(View.GONE);
          lineQ04.setVisibility(View.GONE);
          secQ05.setVisibility(View.GONE);
          lineQ05.setVisibility(View.GONE);
-         secQ06.setVisibility(View.GONE);
-         lineQ06.setVisibility(View.GONE);
-         secQ07.setVisibility(View.GONE);
-         lineQ07.setVisibility(View.GONE);
+         secQ04.setVisibility(View.GONE);
+         lineQ04.setVisibility(View.GONE);
          secQ05.setVisibility(View.GONE);
          lineQ05.setVisibility(View.GONE);
-         secQ06.setVisibility(View.GONE);
-         lineQ06.setVisibility(View.GONE);
-         secQ07.setVisibility(View.GONE);
-         lineQ07.setVisibility(View.GONE);
-         secQ06.setVisibility(View.GONE);
-         lineQ06.setVisibility(View.GONE);
-         secQ07.setVisibility(View.GONE);
-         lineQ07.setVisibility(View.GONE);
-         secQ07.setVisibility(View.GONE);
-         lineQ07.setVisibility(View.GONE);
+         secQ05.setVisibility(View.GONE);
+         lineQ05.setVisibility(View.GONE);
 
 
         DataSearch(UUID,MEMID);
@@ -261,7 +219,7 @@
      }
      catch(Exception  e)
      {
-         Connection.MessageBox(ScreeningChild.this, e.getMessage());
+         Connection.MessageBox(ScreeningMother.this, e.getMessage());
          return;
      }
  }
@@ -271,33 +229,33 @@
  {
    try
      {
-         secuuid = (LinearLayout) findViewById(R.id.secuuid);
-         lineuuid = (View) findViewById(R.id.lineuuid);
-         lbluuid = (TextView) findViewById(R.id.lbluuid);
-         Vlbluuid = (TextView) findViewById(R.id.Vlbluuid);
-         txtuuid = (EditText) findViewById(R.id.txtuuid);
-        // txtuuid.setText(UUID);
-       //  txtuuid.setEnabled(false);
-        // secuuid.setVisibility(View.GONE);
-         secMEMID = (LinearLayout) findViewById(R.id.secMEMID);
-         lineMEMID = (View) findViewById(R.id.lineMEMID);
-         lblMEMID = (TextView) findViewById(R.id.lblMEMID);
-         VlblMEMID = (TextView) findViewById(R.id.VlblMEMID);
-         txtMEMID = (EditText) findViewById(R.id.txtMEMID);
-       //  txtMEMID.setText(MEMID);
-       //  txtMEMID.setEnabled(false);
-        // secMEMID.setVisibility(View.GONE);
-         seclbl1 = (LinearLayout) findViewById(R.id.seclbl1);
-         linelbl1 = (View) findViewById(R.id.linelbl1);
-
-         secQ01 = (LinearLayout) findViewById(R.id.secQ01);
-         lineQ01 = (View) findViewById(R.id.lineQ01);
-         lblQ01 = (TextView) findViewById(R.id.lblQ01);
-         VlblQ01 = (TextView) findViewById(R.id.VlblQ01);
-         rdogrpQ01 = (RadioGroup) findViewById(R.id.rdogrpQ01);
-         rdoQ011 = (RadioButton) findViewById(R.id.rdoQ011);
-         rdoQ012 = (RadioButton) findViewById(R.id.rdoQ012);
-
+         secuuid = findViewById(R.id.secuuid);
+         lineuuid = findViewById(R.id.lineuuid);
+         lbluuid = findViewById(R.id.lbluuid);
+         Vlbluuid = findViewById(R.id.Vlbluuid);
+         txtuuid = findViewById(R.id.txtuuid);
+        /* if (UUID.length() == 0) txtuuid.setText(Global.Get_UUID());
+         else txtuuid.setText(UUID); 
+         txtuuid.setEnabled(false);
+         secuuid.setVisibility(View.GONE);*/
+         secMEMID = findViewById(R.id.secMEMID);
+         lineMEMID = findViewById(R.id.lineMEMID);
+         lblMEMID = findViewById(R.id.lblMEMID);
+         VlblMEMID = findViewById(R.id.VlblMEMID);
+         txtMEMID = findViewById(R.id.txtMEMID);
+         /*if (MEMID.length() == 0) txtMEMID.setText(Global.Get_UUID());
+         else txtMEMID.setText(MEMID); 
+         txtMEMID.setEnabled(false);*/
+         secMEMID.setVisibility(View.GONE);
+         seclbl2=findViewById(R.id.seclbl2);
+         linelbl2=findViewById(R.id.linelbl2);
+         secQ01 = findViewById(R.id.secQ01);
+         lineQ01 = findViewById(R.id.lineQ01);
+         lblQ01 =  findViewById(R.id.lblQ01);
+         VlblQ01 =  findViewById(R.id.VlblQ01);
+         rdogrpQ01 =  findViewById(R.id.rdogrpQ01);
+         rdoQ011 =  findViewById(R.id.rdoQ011);
+         rdoQ012 =  findViewById(R.id.rdoQ012);
          rdogrpQ01.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
          @Override
          public void onCheckedChanged(RadioGroup radioGroup,int radioButtonID) {
@@ -312,12 +270,9 @@
 
              if(rbData.equalsIgnoreCase("2"))
              {
-                    secQ02Date.setVisibility(View.GONE);
-                    lineQ02Date.setVisibility(View.GONE);
-                    txtQ02Date.setText("");
-                    secQ02Y.setVisibility(View.GONE);
-                    lineQ02Y.setVisibility(View.GONE);
-                    txtQ02Y.setText("");
+                    secQ02.setVisibility(View.GONE);
+                    lineQ02.setVisibility(View.GONE);
+                    rdogrpQ02.clearCheck();
                     secQ03.setVisibility(View.GONE);
                     lineQ03.setVisibility(View.GONE);
                     rdogrpQ03.clearCheck();
@@ -327,43 +282,64 @@
                     secQ05.setVisibility(View.GONE);
                     lineQ05.setVisibility(View.GONE);
                     rdogrpQ05.clearCheck();
-                    secQ06.setVisibility(View.GONE);
-                    lineQ06.setVisibility(View.GONE);
-                    rdogrpQ06.clearCheck();
-                    secQ07.setVisibility(View.GONE);
-                    lineQ07.setVisibility(View.GONE);
-                    rdogrpQ07.clearCheck();
              }
              else
              {
-                    secQ02Date.setVisibility(View.VISIBLE);
-                    lineQ02Date.setVisibility(View.VISIBLE);
-                    secQ02Y.setVisibility(View.VISIBLE);
-                    lineQ02Y.setVisibility(View.VISIBLE);
+                    secQ02.setVisibility(View.VISIBLE);
+                    lineQ02.setVisibility(View.VISIBLE);
                     secQ03.setVisibility(View.VISIBLE);
                     lineQ03.setVisibility(View.VISIBLE);
                     secQ04.setVisibility(View.VISIBLE);
                     lineQ04.setVisibility(View.VISIBLE);
-                    secQ05.setVisibility(View.VISIBLE);
-                    lineQ05.setVisibility(View.VISIBLE);
-                    secQ06.setVisibility(View.VISIBLE);
-                    lineQ06.setVisibility(View.VISIBLE);
              }
             }
          public void onNothingSelected(AdapterView<?> adapterView) {
              return;
             } 
          }); 
-         secQ02Date = findViewById(R.id.secQ02Date);
-         lineQ02Date = findViewById(R.id.lineQ02Date);
-         lblQ02Date = findViewById(R.id.lblQ02Date);
-         VlblQ02Date = findViewById(R.id.VlblQ02Date);
-         txtQ02Date = findViewById(R.id.txtQ02Date);
-         secQ02Y = findViewById(R.id.secQ02Y);
-         lineQ02Y = findViewById(R.id.lineQ02Y);
-         lblQ02Y = findViewById(R.id.lblQ02Y);
-         VlblQ02Y = findViewById(R.id.VlblQ02Y);
-         txtQ02Y = findViewById(R.id.txtQ02Y);
+         secQ02 = findViewById(R.id.secQ02);
+         lineQ02 = findViewById(R.id.lineQ02);
+         lblQ02 =  findViewById(R.id.lblQ02);
+         VlblQ02 =  findViewById(R.id.VlblQ02);
+         rdogrpQ02 =  findViewById(R.id.rdogrpQ02);
+         rdoQ021 =  findViewById(R.id.rdoQ021);
+         rdoQ022 =  findViewById(R.id.rdoQ022);
+         rdogrpQ02.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+         @Override
+         public void onCheckedChanged(RadioGroup radioGroup,int radioButtonID) {
+             String rbData = "";
+             RadioButton rb;
+             String[] d_rdogrpQ02 = new String[] {"1","2"};
+             for (int i = 0; i < rdogrpQ02.getChildCount(); i++)
+             {
+               rb = (RadioButton) rdogrpQ02.getChildAt(i);
+               if (rb.isChecked()) rbData = d_rdogrpQ02[i];
+             }
+
+             if(rbData.equalsIgnoreCase("2"))
+             {
+                    secQ03.setVisibility(View.GONE);
+                    lineQ03.setVisibility(View.GONE);
+                    rdogrpQ03.clearCheck();
+                    secQ04.setVisibility(View.GONE);
+                    lineQ04.setVisibility(View.GONE);
+                    rdogrpQ04.clearCheck();
+                    secQ05.setVisibility(View.GONE);
+                    lineQ05.setVisibility(View.GONE);
+                    rdogrpQ05.clearCheck();
+             }
+             else
+             {
+                    secQ03.setVisibility(View.VISIBLE);
+                    lineQ03.setVisibility(View.VISIBLE);
+                    secQ04.setVisibility(View.VISIBLE);
+                    lineQ04.setVisibility(View.VISIBLE);
+             }
+            }
+         public void onNothingSelected(AdapterView<?> adapterView) {
+             return;
+            } 
+         }); 
          secQ03 = findViewById(R.id.secQ03);
          lineQ03 = findViewById(R.id.lineQ03);
          lblQ03 =  findViewById(R.id.lblQ03);
@@ -383,7 +359,7 @@
                if (rb.isChecked()) rbData = d_rdogrpQ03[i];
              }
 
-             if(rbData.equalsIgnoreCase("2"))
+             if(rbData.equalsIgnoreCase("1"))
              {
                     secQ04.setVisibility(View.GONE);
                     lineQ04.setVisibility(View.GONE);
@@ -391,21 +367,11 @@
                     secQ05.setVisibility(View.GONE);
                     lineQ05.setVisibility(View.GONE);
                     rdogrpQ05.clearCheck();
-                    secQ06.setVisibility(View.GONE);
-                    lineQ06.setVisibility(View.GONE);
-                    rdogrpQ06.clearCheck();
-                    secQ07.setVisibility(View.GONE);
-                    lineQ07.setVisibility(View.GONE);
-                    rdogrpQ07.clearCheck();
              }
              else
              {
                     secQ04.setVisibility(View.VISIBLE);
                     lineQ04.setVisibility(View.VISIBLE);
-                    secQ05.setVisibility(View.VISIBLE);
-                    lineQ05.setVisibility(View.VISIBLE);
-                    secQ06.setVisibility(View.VISIBLE);
-                    lineQ06.setVisibility(View.VISIBLE);
              }
             }
          public void onNothingSelected(AdapterView<?> adapterView) {
@@ -436,19 +402,11 @@
                     secQ05.setVisibility(View.GONE);
                     lineQ05.setVisibility(View.GONE);
                     rdogrpQ05.clearCheck();
-                    secQ06.setVisibility(View.GONE);
-                    lineQ06.setVisibility(View.GONE);
-                    rdogrpQ06.clearCheck();
-                    secQ07.setVisibility(View.GONE);
-                    lineQ07.setVisibility(View.GONE);
-                    rdogrpQ07.clearCheck();
              }
              else
              {
                     secQ05.setVisibility(View.VISIBLE);
                     lineQ05.setVisibility(View.VISIBLE);
-                    secQ06.setVisibility(View.VISIBLE);
-                    lineQ06.setVisibility(View.VISIBLE);
              }
             }
          public void onNothingSelected(AdapterView<?> adapterView) {
@@ -462,83 +420,10 @@
          rdogrpQ05 =  findViewById(R.id.rdogrpQ05);
          rdoQ051 =  findViewById(R.id.rdoQ051);
          rdoQ052 =  findViewById(R.id.rdoQ052);
-         rdogrpQ05.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
-         @Override
-         public void onCheckedChanged(RadioGroup radioGroup,int radioButtonID) {
-             String rbData = "";
-             RadioButton rb;
-             String[] d_rdogrpQ05 = new String[] {"1","2"};
-             for (int i = 0; i < rdogrpQ05.getChildCount(); i++)
-             {
-               rb = (RadioButton) rdogrpQ05.getChildAt(i);
-               if (rb.isChecked()) rbData = d_rdogrpQ05[i];
-             }
-
-             if(rbData.equalsIgnoreCase("1"))
-             {
-                    secQ06.setVisibility(View.GONE);
-                    lineQ06.setVisibility(View.GONE);
-                    rdogrpQ06.clearCheck();
-                    secQ07.setVisibility(View.GONE);
-                    lineQ07.setVisibility(View.GONE);
-                    rdogrpQ07.clearCheck();
-             }
-             else
-             {
-                    secQ06.setVisibility(View.VISIBLE);
-                    lineQ06.setVisibility(View.VISIBLE);
-             }
-            }
-         public void onNothingSelected(AdapterView<?> adapterView) {
-             return;
-            } 
-         }); 
-         secQ06 = findViewById(R.id.secQ06);
-         lineQ06 = findViewById(R.id.lineQ06);
-         lblQ06 =  findViewById(R.id.lblQ06);
-         VlblQ06 =  findViewById(R.id.VlblQ06);
-         rdogrpQ06 =  findViewById(R.id.rdogrpQ06);
-         rdoQ061 =  findViewById(R.id.rdoQ061);
-         rdoQ062 =  findViewById(R.id.rdoQ062);
-         rdogrpQ06.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
-         @Override
-         public void onCheckedChanged(RadioGroup radioGroup,int radioButtonID) {
-             String rbData = "";
-             RadioButton rb;
-             String[] d_rdogrpQ06 = new String[] {"1","2"};
-             for (int i = 0; i < rdogrpQ06.getChildCount(); i++)
-             {
-               rb = (RadioButton) rdogrpQ06.getChildAt(i);
-               if (rb.isChecked()) rbData = d_rdogrpQ06[i];
-             }
-
-             if(rbData.equalsIgnoreCase("2"))
-             {
-                    secQ07.setVisibility(View.GONE);
-                    lineQ07.setVisibility(View.GONE);
-                    rdogrpQ07.clearCheck();
-             }
-             else
-             {
-                    secQ07.setVisibility(View.VISIBLE);
-                    lineQ07.setVisibility(View.VISIBLE);
-             }
-            }
-         public void onNothingSelected(AdapterView<?> adapterView) {
-             return;
-            } 
-         }); 
-         secQ07 = findViewById(R.id.secQ07);
-         lineQ07 = findViewById(R.id.lineQ07);
-         lblQ07 =  findViewById(R.id.lblQ07);
-         VlblQ07 =  findViewById(R.id.VlblQ07);
-         rdogrpQ07 =  findViewById(R.id.rdogrpQ07);
-         rdoQ071 =  findViewById(R.id.rdoQ071);
-         rdoQ072 =  findViewById(R.id.rdoQ072);
      }
      catch(Exception  e)
      {
-         Connection.MessageBox(ScreeningChild.this, e.getMessage());
+         Connection.MessageBox(ScreeningMother.this, e.getMessage());
          return;
      }
  }
@@ -550,14 +435,14 @@
          String ValidationMSG = ValidationCheck();
          if(ValidationMSG.length()>0)
          {
-         	Connection.MessageBox(ScreeningChild.this, ValidationMSG);
+         	Connection.MessageBox(ScreeningMother.this, ValidationMSG);
          	return;
          }
  
          String SQL = "";
          RadioButton rb;
 
-         ScreeningChild_DataModel objSave = new ScreeningChild_DataModel();
+         ScreeningMother_DataModel objSave = new ScreeningMother_DataModel();
          objSave.setuuid(txtuuid.getText().toString());
          objSave.setMEMID(txtMEMID.getText().toString());
          String[] d_rdogrpQ01 = new String[] {"1","2"};
@@ -568,8 +453,14 @@
              if (rb.isChecked()) objSave.setQ01(d_rdogrpQ01[i]);
          }
 
-         objSave.setQ02Date(txtQ02Date.getText().toString().length() > 0 ? Global.DateConvertYMD(txtQ02Date.getText().toString()) : txtQ02Date.getText().toString());
-         objSave.setQ02Y(txtQ02Y.getText().toString());
+         String[] d_rdogrpQ02 = new String[] {"1","2"};
+         objSave.setQ02("");
+         for (int i = 0; i < rdogrpQ02.getChildCount(); i++)
+         {
+             rb = (RadioButton) rdogrpQ02.getChildAt(i);
+             if (rb.isChecked()) objSave.setQ02(d_rdogrpQ02[i]);
+         }
+
          String[] d_rdogrpQ03 = new String[] {"1","2"};
          objSave.setQ03("");
          for (int i = 0; i < rdogrpQ03.getChildCount(); i++)
@@ -594,22 +485,6 @@
              if (rb.isChecked()) objSave.setQ05(d_rdogrpQ05[i]);
          }
 
-         String[] d_rdogrpQ06 = new String[] {"1","2"};
-         objSave.setQ06("");
-         for (int i = 0; i < rdogrpQ06.getChildCount(); i++)
-         {
-             rb = (RadioButton) rdogrpQ06.getChildAt(i);
-             if (rb.isChecked()) objSave.setQ06(d_rdogrpQ06[i]);
-         }
-
-         String[] d_rdogrpQ07 = new String[] {"1","2"};
-         objSave.setQ07("");
-         for (int i = 0; i < rdogrpQ07.getChildCount(); i++)
-         {
-             rb = (RadioButton) rdogrpQ07.getChildAt(i);
-             if (rb.isChecked()) objSave.setQ07(d_rdogrpQ07[i]);
-         }
-
          objSave.setStartTime(STARTTIME);
          objSave.setEndTime(g.CurrentTime24());
          objSave.setDeviceID(DEVICEID);
@@ -623,17 +498,18 @@
              returnIntent.putExtra("res", "");
              setResult(Activity.RESULT_OK, returnIntent);
 
-             Connection.MessageBox(ScreeningChild.this, "Save successfully");
+           //  Toast.makeText(ScreeningMother.this,"Save Successfully...",Toast.LENGTH_SHORT).show();
+             Connection.MessageBox(ScreeningMother.this,"Save Successfully");
              finish();
          }
          else{
-             Connection.MessageBox(ScreeningChild.this, status);
+             Connection.MessageBox(ScreeningMother.this, status);
              return;
          }
      }
      catch(Exception  e)
      {
-         Connection.MessageBox(ScreeningChild.this, e.getMessage());
+         Connection.MessageBox(ScreeningMother.this, e.getMessage());
          return;
      }
  }
@@ -647,59 +523,38 @@
          ResetSectionColor();
          if(txtuuid.getText().toString().length()==0 & secuuid.isShown())
            {
-             ValidationMsg += "\nRequired field: txtuuid";
+             ValidationMsg += "\n"+ lbluuid.getText().toString() + " Required field: "+ Vlbluuid.getText().toString();
              secuuid.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
            }
          if(txtMEMID.getText().toString().length()==0 & secMEMID.isShown())
            {
-             ValidationMsg += "\nRequired field: txtMEMID";
+             ValidationMsg += "\n"+ lblMEMID.getText().toString() + " Required field: "+ VlblMEMID.getText().toString();
              secMEMID.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
            }
          if(!rdoQ011.isChecked() & !rdoQ012.isChecked() & secQ01.isShown())
            {
-             ValidationMsg += "\nRequired field: rdoQ011";
+             ValidationMsg += "\n"+ lblQ01.getText().toString() + " Required field: "+ VlblQ01.getText().toString();
              secQ01.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
            }
-         DV = Global.DateValidate(txtQ02Date.getText().toString());
-         if(DV.length()!=0 & secQ02Date.isShown())
+         if(!rdoQ021.isChecked() & !rdoQ022.isChecked() & secQ02.isShown())
            {
-             ValidationMsg += "\nRequired field: Q02 Date";
-             secQ02Date.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
-           }
-         if(txtQ02Y.getText().toString().length()==0 & secQ02Y.isShown())
-           {
-             ValidationMsg += "\nRequired field: Q02Y";
-             secQ02Y.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
-           }
-         if(secQ02Y.isShown() & (Integer.parseInt(txtQ02Y.getText().toString().length()==0 ? "1" : txtQ02Y.getText().toString()) < 1 || Integer.parseInt(txtQ02Y.getText().toString().length()==0 ? "2" : txtQ02Y.getText().toString()) > 2))
-           {
-             ValidationMsg += "\nRequired field: Q02Y";
-             secQ02Y.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
+             ValidationMsg += "\n"+ lblQ02.getText().toString() + " Required field: "+ VlblQ02.getText().toString();
+             secQ02.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
            }
          if(!rdoQ031.isChecked() & !rdoQ032.isChecked() & secQ03.isShown())
            {
-             ValidationMsg += "\nRequired field: Q031";
+             ValidationMsg += "\n"+ lblQ03.getText().toString() + " Required field: "+ VlblQ03.getText().toString();
              secQ03.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
            }
          if(!rdoQ041.isChecked() & !rdoQ042.isChecked() & secQ04.isShown())
            {
-             ValidationMsg += "\nRequired field: Q041";
+             ValidationMsg += "\n"+ lblQ04.getText().toString() + " Required field: "+ VlblQ04.getText().toString();
              secQ04.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
            }
          if(!rdoQ051.isChecked() & !rdoQ052.isChecked() & secQ05.isShown())
            {
-             ValidationMsg +=  "\nRequired field: Q051";
+             ValidationMsg += "\n"+ lblQ05.getText().toString() + " Required field: "+ VlblQ05.getText().toString();
              secQ05.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
-           }
-         if(!rdoQ061.isChecked() & !rdoQ062.isChecked() & secQ06.isShown())
-           {
-             ValidationMsg +=  "\nRequired field: Q061";
-             secQ06.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
-           }
-         if(!rdoQ071.isChecked() & !rdoQ072.isChecked() & secQ07.isShown())
-           {
-             ValidationMsg +=  "\nRequired field: rdoQ071";
-             secQ07.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.color_Section_Highlight));
            }
      }
      catch(Exception  e)
@@ -717,14 +572,10 @@
              secuuid.setBackgroundColor(Color.WHITE);
              secMEMID.setBackgroundColor(Color.WHITE);
              secQ01.setBackgroundColor(Color.WHITE);
-             secQ02Date.setBackgroundColor(Color.WHITE);
-             secQ02Y.setBackgroundColor(Color.WHITE);
-             secQ02Y.setBackgroundColor(Color.WHITE);
+             secQ02.setBackgroundColor(Color.WHITE);
              secQ03.setBackgroundColor(Color.WHITE);
              secQ04.setBackgroundColor(Color.WHITE);
              secQ05.setBackgroundColor(Color.WHITE);
-             secQ06.setBackgroundColor(Color.WHITE);
-             secQ07.setBackgroundColor(Color.WHITE);
      }
      catch(Exception  e)
      {
@@ -736,10 +587,10 @@
        try
         {     
            RadioButton rb;
-           ScreeningChild_DataModel d = new ScreeningChild_DataModel();
+           ScreeningMother_DataModel d = new ScreeningMother_DataModel();
            String SQL = "Select * from "+ TableName +"  Where uuid='"+ uuid +"' and MEMID='"+ MEMID +"'";
-           List<ScreeningChild_DataModel> data = d.SelectAll(this, SQL);
-           for(ScreeningChild_DataModel item : data){
+           List<ScreeningMother_DataModel> data = d.SelectAll(this, SQL);
+           for(ScreeningMother_DataModel item : data){
              txtuuid.setText(item.getuuid());
              txtMEMID.setText(item.getMEMID());
              String[] d_rdogrpQ01 = new String[] {"1","2"};
@@ -751,8 +602,15 @@
                      rb.setChecked(true);
                  }
              }
-             txtQ02Date.setText(item.getQ02Date().toString().length()==0 ? "" : Global.DateConvertDMY(item.getQ02Date()));
-             txtQ02Y.setText(String.valueOf(item.getQ02Y()));
+             String[] d_rdogrpQ02 = new String[] {"1","2"};
+             for (int i = 0; i < d_rdogrpQ02.length; i++)
+             {
+                 if (String.valueOf(item.getQ02()).equals(String.valueOf(d_rdogrpQ02[i])))
+                 {
+                     rb = (RadioButton) rdogrpQ02.getChildAt(i);
+                     rb.setChecked(true);
+                 }
+             }
              String[] d_rdogrpQ03 = new String[] {"1","2"};
              for (int i = 0; i < d_rdogrpQ03.length; i++)
              {
@@ -780,29 +638,11 @@
                      rb.setChecked(true);
                  }
              }
-             String[] d_rdogrpQ06 = new String[] {"1","2"};
-             for (int i = 0; i < d_rdogrpQ06.length; i++)
-             {
-                 if (String.valueOf(item.getQ06()).equals(String.valueOf(d_rdogrpQ06[i])))
-                 {
-                     rb = (RadioButton) rdogrpQ06.getChildAt(i);
-                     rb.setChecked(true);
-                 }
-             }
-             String[] d_rdogrpQ07 = new String[] {"1","2"};
-             for (int i = 0; i < d_rdogrpQ07.length; i++)
-             {
-                 if (String.valueOf(item.getQ07()).equals(String.valueOf(d_rdogrpQ07[i])))
-                 {
-                     rb = (RadioButton) rdogrpQ07.getChildAt(i);
-                     rb.setChecked(true);
-                 }
-             }
            }
         }
         catch(Exception  e)
         {
-            Connection.MessageBox(ScreeningChild.this, e.getMessage());
+            Connection.MessageBox(ScreeningMother.this, e.getMessage());
             return;
         }
      }
@@ -825,18 +665,9 @@
  private DatePickerDialog.OnDateSetListener mDateSetListener = new DatePickerDialog.OnDateSetListener() {
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
       mYear = year; mMonth = monthOfYear+1; mDay = dayOfMonth;
-      EditText dtpDate;
+      EditText txtDate;
 
 
-        dtpDate = findViewById(R.id.txtQ02Date);
-      if (VariableID.equals("btnQ02Date"))
-      {
-          dtpDate = findViewById(R.id.txtQ02Date);
-      }
-        dtpDate.setText(new StringBuilder()
-      .append(Global.Right("00"+mDay,2)).append("/")
-      .append(Global.Right("00"+mMonth,2)).append("/")
-      .append(mYear));
       }
   };
 

@@ -102,7 +102,9 @@
         <activity android:name="forms_activity.Patient_list" />
         <activity android:name="forms_activity.Patient" />
         <activity android:name="forms_activity.SectionA" />
+        <activity android:name="forms_activity.HHMember" />
         <activity android:name="forms_activity.ScreeningChild" />
+        <activity android:name="forms_activity.ScreeningMother" />
         <activity android:name="forms_activity.SectionB" />
         <activity android:name="forms_activity.SectionC" />
         <activity android:name="forms_activity.SPECIFICVAR" />

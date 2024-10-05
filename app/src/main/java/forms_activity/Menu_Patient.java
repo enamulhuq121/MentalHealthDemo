@@ -45,7 +45,7 @@ public class Menu_Patient extends Activity {
     static String PatCatDeliv = "";
     static String RecvService = "";
 
-    Button cmdSChild, cmdSecB,cmdSecC,cmdSecD,cmdSecE,cmdSecF,cmdSecG,cmdSecH,cmdWomen;
+    Button cmdHHmember, cmdSChild, cmdSMother, cmdSecB,cmdSecC,cmdSecD,cmdSecE,cmdSecF,cmdSecG,cmdSecH,cmdWomen;
 
     LinearLayout secMenuConsent;
     Connection C;
@@ -100,15 +100,33 @@ public class Menu_Patient extends Activity {
         txtWName=(TextView) findViewById(R.id.txtWName);
         txtWName.setText(WoName);
 
+        cmdHHmember=findViewById(R.id.cmdFHHmember);
+        cmdHHmember.setOnClickListener(view -> {
+            Bundle IDbundle = new Bundle();
+
+            Intent f1 = new Intent(getApplicationContext(), HHMember.class);
+            f1.putExtras(IDbundle);
+            startActivityForResult(f1,1);
+        });
+
         cmdSChild=findViewById(R.id.cmdFSChild);
         cmdSChild.setOnClickListener(view -> {
             Bundle IDbundle = new Bundle();
-            IDbundle.putString("PatientID", PATIENTID);
-            IDbundle.putString("FacilityID", FACILITYID);
-            IDbundle.putString("WoName", WoName);
             Intent f1 = new Intent(getApplicationContext(), ScreeningChild.class);
             f1.putExtras(IDbundle);
             startActivityForResult(f1,1);
+        });
+
+        cmdSMother=findViewById(R.id.cmdFSMother);
+        cmdSMother.setOnClickListener(view -> {
+
+            Bundle IDbundle = new Bundle();
+
+            Intent f1 = new Intent(getApplicationContext(), ScreeningMother.class);
+            f1.putExtras(IDbundle);
+            startActivityForResult(f1,1);
+
+
         });
 
 
